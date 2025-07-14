@@ -1,0 +1,20 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: mochi-worker
+  namespace: mochi-inference
+spec:
+  replicas: 2
+  selector:
+    matchLabels:
+      app: mochi-worker
+  template:
+    metadata:
+      labels:
+        app: mochi-worker
+    spec:
+      containers:
+      - name: rq-worker
+        image: arunimamook/mochi-redis-worker:latest
+        command: ["python3", "worker.py"]
+        imagePullPolicy: Always

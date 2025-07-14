@@ -1,0 +1,26 @@
+{% extends "base.html" %}
+{% block title %}All Jobs{% endblock %}
+{% block content %}
+  <h2>All Submitted Jobs</h2>
+  <table>
+    <tr>
+      <th>Job ID</th>
+      <th>Status</th>
+    </tr>
+    {% for job in jobs %}
+      <tr>
+        <td><a href="{{ url_for('job_status', job_id=job.job_id) }}">{{ job.job_id }}</a></td>
+        <td>{{ job.status }}</td>
+      </tr>
+    {% endfor %}
+  </table>
+  <div class="pagination">
+    {% if page > 1 %}
+      <a href="{{ url_for('list_jobs', page=page-1) }}">Previous</a>
+    {% endif %}
+    <span>Page {{ page }}</span>
+    {% if has_next %}
+      <a href="{{ url_for('list_jobs', page=page+1) }}">Next</a>
+    {% endif %}
+  </div>
+{% endblock %}

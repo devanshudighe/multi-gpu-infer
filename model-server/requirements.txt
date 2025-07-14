@@ -1,0 +1,13 @@
+numpy<2
+torch==2.1.2
+torchvision
+torchaudio
+git+https://github.com/huggingface/diffusers.git
+transformers
+accelerate
+huggingface_hub
+sentencepiece
+fastapi
+uvicorn
+imageio
+imageio-ffmpeg

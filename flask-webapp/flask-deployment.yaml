@@ -1,0 +1,34 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: flask-ui
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: flask-ui
+  template:
+    metadata:
+      labels:
+        app: flask-ui
+    spec:
+      containers:
+        - name: flask
+          image: arunimamook/flask-webserver:latest
+          imagePullPolicy: Always
+          ports:
+            - containerPort: 5000
+          env:
+            - name: FLASK_SECRET_KEY
+              value: super-secret-key
+            - name: FASTAPI_BASE_URL
+              value: http://api-service:8000
+            - name: VIDEO_DIR
+              value: /scratch/generated
+          volumeMounts:
+            - name: video-storage
+              mountPath: /scratch/generated
+      volumes:
+        - name: video-storage
+          persistentVolumeClaim:
+            claimName: scratch-pvc

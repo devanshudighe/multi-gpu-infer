@@ -1,0 +1,43 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: mochi-api-server
+  namespace: mochi-inference
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: mochi-api-server
+  template:
+    metadata:
+      labels:
+        app: mochi-api-server
+    spec:
+      containers:
+      - name: api-server
+        image: arunimamook/mochi-api-server:latest
+        imagePullPolicy: Always
+        ports:
+        - containerPort: 8000
+        volumeMounts:
+        - name: scratch-storage
+          mountPath: /scratch/generated
+      volumes:
+      - name: scratch-storage
+        persistentVolumeClaim:
+          claimName: scratch-pvc
+
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: api-service
+  namespace: mochi-inference
+spec:
+  selector:
+    app: mochi-api-server
+  ports:
+    - port: 8000
+      targetPort: 8000
+      protocol: TCP
+  type: ClusterIP

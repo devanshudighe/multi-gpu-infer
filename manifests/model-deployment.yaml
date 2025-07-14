@@ -1,0 +1,54 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: mochi-model-server
+  namespace: mochi-inference
+spec:
+  replicas: 4
+  selector:
+    matchLabels:
+      app: mochi-model-server
+  template:
+    metadata:
+      labels:
+        app: mochi-model-server
+    spec:
+      containers:
+      - name: mochi-server
+        image: arunimamook/mochi-model-server:latest
+        imagePullPolicy: Always
+        ports:
+        - containerPort: 8000
+        resources:
+          limits:
+            nvidia.com/gpu: 2
+          requests:
+            nvidia.com/gpu: 2
+        volumeMounts:
+        - name: model-data
+          mountPath: /app/mochi-1-preview
+          subPath: mochi-1-preview
+        - name: scratch-storage
+          mountPath: /scratch/generated
+      volumes:
+      - name: model-data
+        persistentVolumeClaim:
+          claimName: model-pvc
+      - name: scratch-storage
+        persistentVolumeClaim:
+          claimName: scratch-pvc
+
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: model-server-service
+  namespace: mochi-inference
+spec:
+  selector:
+    app: mochi-model-server
+  ports:
+  - protocol: TCP
+    port: 8000
+    targetPort: 8000
+  type: ClusterIP

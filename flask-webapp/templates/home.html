@@ -1,0 +1,9 @@
+{% extends "base.html" %}
+{% block title %}Home{% endblock %}
+{% block content %}
+  <h1>Welcome to the Video Generator</h1>
+  <div class="card-grid">
+    <a href="{{ url_for('submit_job_form') }}" class="card">Submit a Video Generation Request</a>
+    <a href="{{ url_for('list_jobs') }}" class="card">View Existing Jobs</a>
+  </div>
+{% endblock %}

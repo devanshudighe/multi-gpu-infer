@@ -1,0 +1,57 @@
+# persistent-volume.yaml
+apiVersion: v1
+kind: PersistentVolume
+metadata:
+  name: model-pv
+spec:
+  capacity:
+    storage: 1000Gi  # You can increase this up to ~15T
+  accessModes:
+    - ReadWriteOnce
+  persistentVolumeReclaimPolicy: Retain
+  hostPath:
+    path: /scratch/kaniko
+---
+# persistent-volume-claim.yaml
+apiVersion: v1
+kind: PersistentVolumeClaim
+metadata:
+  name: model-pvc
+spec:
+  accessModes:
+    - ReadWriteOnce
+  resources:
+    requests:
+      storage: 1000Gi
+  volumeName: model-pv  # This binds to the specific PV
+
+---
+apiVersion: v1
+kind: PersistentVolume
+metadata:
+  name: scratch-pv
+spec:
+  capacity:
+    storage: 300Gi
+  accessModes:
+    - ReadWriteMany
+  persistentVolumeReclaimPolicy: Retain
+  storageClassName: ""
+  hostPath:
+    path: /scratch/kaniko/
+
+---
+apiVersion: v1
+kind: PersistentVolumeClaim
+metadata:
+  name: scratch-pvc
+  namespace: mochi-inference
+spec:
+  accessModes:
+    - ReadWriteMany
+  resources:
+    requests:
+      storage: 300Gi
+  volumeName: scratch-pv
+  storageClassName: ""
+

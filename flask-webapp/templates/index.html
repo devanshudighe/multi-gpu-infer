@@ -1,0 +1,35 @@
+{% extends "base.html" %}
+{% block title %}Submit Job{% endblock %}
+
+{% block content %}
+  <h2>Submit a Video Generation Job</h2>
+
+  {% if not job %}
+    <form action="/submit" method="post">
+      <textarea name="prompt" rows="4" cols="60" placeholder="Enter your prompt here...">{{ prompt }}</textarea><br>
+      <button type="submit">Submit</button>
+    </form>
+  {% endif %}
+
+  {% if job %}
+    <hr>
+    <h3>Job ID: {{ job.job_id }}</h3>
+    <p>Status: <strong>{{ job.status }}</strong></p>
+
+    {% if job.status == 'completed' %}
+      <video width="480" controls>
+        <source src="{{ job.result_url }}" type="video/mp4">
+      </video>
+      <a href="{{ job.result_url }}" download>
+        <button>Download</button>
+      </a>
+    {% elif job.error %}
+      <p style="color: red;">Error: {{ job.error }}</p>
+    {% else %}
+      <p>Video is still processing... <a href="">Refresh</a></p>
+      <script>
+        setTimeout(() => { window.location.reload(); }, 5000);
+      </script>
+    {% endif %}
+  {% endif %}
+{% endblock %}

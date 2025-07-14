@@ -1,0 +1,16 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>Job Status</title>
+</head>
+<body>
+  <h1>Status for Job ID: {{ job.job_id }}</h1>
+  <p>Status: {{ job.status }}</p>
+  {% if job.status == 'completed' %}
+    <a href="/download/{{ job.job_id }}">Download Video</a>
+  {% elif job.error %}
+    <p>Error: {{ job.error }}</p>
+  {% endif %}
+  <br><a href="/">Back</a>
+</body>
+</html>
