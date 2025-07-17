@@ -57,7 +57,6 @@ def run_inference(prompt: str):
             try:
                 print(f"[Model-Serve] Running inference on GPU {gpu_id}")
                 pipe = pipeline_pool[gpu_id]
-            # with torch.autocast("cuda", torch.bfloat16, cache_enabled=False):
                 result = pipe(prompt=prompt, num_frames=60)
                 frames = result.frames[0] if hasattr(result, "frames") else result["frames"]
                 return frames
