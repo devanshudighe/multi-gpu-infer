@@ -4,7 +4,7 @@
 
 This project was developed as a hands-on infrastructure engineering exercise focused on building a scalable, GPU-aware video generation system using state-of-the-art diffusion models.
 
-It demonstrates an end-to-end deployment of a text-to-video GenAI workflow using Kubernetes, FastAPI, and Redis-backed asynchronous queues — optimized to fully utilize multi-GPU nodes with concurrent request handling and model-level load balancing.
+It demonstrates an end-to-end deployment of a text-to-video GenAI workflow using Kubernetes, FastAPI, and Redis-backed asynchronous queues, optimized to fully utilize multi-GPU nodes with concurrent request handling and model-level load balancing.
 
 The architecture is designed to mimic real-world ML inference serving platforms, enabling rapid video synthesis, monitoring, and download through a simple web UI.
 
